@@ -11,7 +11,8 @@ const sass = require("node-sass-middleware");
 const app = express();
 const morgan = require("morgan");
 const cookieSession = require("cookie-session");
-var path = require('path');
+const database = require("./database/database");
+//var path = require('path');
 
 
 var indexRouter = require('./routes/index');
