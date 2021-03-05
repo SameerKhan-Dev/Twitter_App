@@ -86,7 +86,7 @@ PUT /tweets/:id
 Delete tweet:
 DELETE /tweets/:id
 
-GET A SPECFIC TWEET:
+GET A SPECIFIC TWEET:
 GET /tweets/:id
 
 GET All tweets for a User:
@@ -163,6 +163,20 @@ app.post("/api/login", (req, res) => {
   app.post("/api/logout", (req, res) => {
     // clear the cookies when logged out
     req.session = null;
+    /*
+    new Promise ((resolve, reject) => {
+
+      req.session.destroy((err) => {
+        if(err) reject(err)
+
+        res.clearCookie("user_id");
+
+        resolve();
+      });
+
+    })
+    */
+    res.clearCookie("user_id");
     res.send("logout successful");
   });
 

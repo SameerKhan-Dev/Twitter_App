@@ -20,7 +20,7 @@ VALUES
      * 
      * Test the POST ROUTE
      */
-    describe("POST /login", () =>{
+    describe("POST /api/login", () =>{
 
         const userOne = {
             email: "bell_rogers@email.com",
