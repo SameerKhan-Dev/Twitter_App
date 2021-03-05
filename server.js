@@ -13,13 +13,13 @@ const morgan = require("morgan");
 const cookieSession = require("cookie-session");
 const database = require("./database/database");
 var path = require('path');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const add_new_user = require('./database/databaseHelpers/addNewUser');
 const check_unique_userName = require('./database/databaseHelpers/checkUniqueUserName');
-const get_user_by_email = require ('.database/databaseHelpers/getUserByEmail');
+const get_user_by_email = require ('./database/databaseHelpers/getUserByEmail');
 
 /*
     * Have correct formatting
@@ -127,9 +127,37 @@ app.listen(PORT, () => {
 });
 
 app.post("/api/login", (req, res) => {
-  res.send("welcome to the login post route");
+  
+  const email = req.body.email;
+  const password = req.body.password;
+  // add if email is empty what to do.
+  get_user_by_email(email)
+    .then(async (response) => {
+        if(response.length > 0){
+          // user exists in datbase
+          console.log("here");
+          console.log("RESPONSE IS: ", response);
+       
+          //console.log(passwordMatch is:)
+          let passwordMatch = await bcrypt.compare(password, response[0].password);
+            console.log("here2");
+            console.log("passwordMatch is:", passwordMatch);
 
-}); 
+            if(passwordMatch) {
+              console.log("here3");
+              res.status(200).send("login successful");
+            } else {
+              console.log("here4");
+              res.status(400).send("incorrect password");
+            }
+        } 
+        else {
+          // user-email does not exist in database
+          console.log("here6");
+          res.status(400).send("invalid email - email is not registered");
+        }
+    }).catch ((err) => { res.status(500).send("server error")});
+  }); 
 
 app.post("/users/new", async (req,res) => {
   try {
@@ -145,6 +173,7 @@ app.post("/users/new", async (req,res) => {
           // means unique userName
           if(response.length > 0){
             res.status(400).send("invalid registration - username already exists");
+          
           } else {
             add_new_user(userName, email, hashedPassword)
               .then((response) => {
