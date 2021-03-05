@@ -160,6 +160,14 @@ app.post("/api/login", (req, res) => {
     }).catch ((err) => { res.status(500).send("server error")});
   }); 
 
+  app.post("/api/logout", (req, res) => {
+    // clear the cookies when logged out
+    req.session = null;
+    res.send("logout successful");
+  });
+
+
+
 app.post("/users/new", async (req,res) => {
   try {
     const userName = req.body.userName;
