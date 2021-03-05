@@ -126,7 +126,7 @@ app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });
 
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   res.send("welcome to the login post route");
 
 }); 

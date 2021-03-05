@@ -29,7 +29,7 @@ describe('Registration Tests', () => {
                 .send(userOne)
                 .end((err, response) => {
                     response.should.have.status(400);
-                    console.log("RESPONSE IS: ", response);
+                   // console.log("RESPONSE IS: ", response);
                     assert.strictEqual(response.text, "incomplete - user registration form - you must specify userName, email and password to register");
                 done();
                 });
