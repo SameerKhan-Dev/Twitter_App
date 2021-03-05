@@ -22,7 +22,7 @@ const runSchemaFiles = function () {
     client.querySync(sql);
   }
 };
-/*
+
 const runSeedFiles = function () {
   console.log(chalk.cyan(`-> Loading Seeds ...`));
   const schemaFilenames = fs.readdirSync('./db/seeds');
@@ -33,13 +33,13 @@ const runSeedFiles = function () {
     client.querySync(sql);
   }
 };
-*/
+
 
 try {
   console.log(`-> Connecting to PG using ${connectionString} ...`);
   client.connectSync(connectionString);
   runSchemaFiles();
-  //runSeedFiles();
+  runSeedFiles();
   client.end();
 } catch (err) {
   console.error(chalk.red(`Failed due to error: ${err}`));
