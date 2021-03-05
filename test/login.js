@@ -67,7 +67,26 @@ VALUES
                 .send(userThree)
                 .end((err, response) => {
                     response.should.have.status(200);
+                    console.log("response.header is: ", response.header);
                     assert.strictEqual(response.text, "login successful");
+                    done();
+                });
+        })
+
+        const userFour = {
+            email: "Anna_padberg@email.com",
+            password: "password"
+        }
+
+        it("It verifies that a session-cookie in header is set when user logins in sucessfully", (done) => {
+            chai.request(server)
+                .post("/api/login")
+                .send(userFour)
+                .end((err, response) => {
+                    response.should.have.status(200);
+                    console.log("response.header is: ", response.header);
+                    let cookiesSession = response.header['set-cookie'];
+                    assert.strictEqual(cookiesSession.length > 0, true);
                     done();
                 });
         })

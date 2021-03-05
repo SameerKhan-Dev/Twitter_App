@@ -106,15 +106,5 @@ describe('Registration Tests', () => {
             email: "jack@email.com",
             password: "helloWorld2"
         }
-        xit("It should verify if cookie is present in response header", (done) => {
-            chai.request(server)
-                .post("/users/new")
-                .send(userSix)
-                .end((err, response) => {
-                    response.should.have.status(200);
-                    expect(response).to.have.cookie('user_id');
-                    done();
-                });
-        })
     })
 })

@@ -145,6 +145,7 @@ app.post("/api/login", (req, res) => {
 
             if(passwordMatch) {
               console.log("here3");
+              req.session["user_id"] = response[0].id;
               res.status(200).send("login successful");
             } else {
               console.log("here4");
@@ -197,7 +198,6 @@ app.post("/users/new", async (req,res) => {
   catch (error) {
     res.status(500).send();
   }  
-
 });
 /*
 Create new user
