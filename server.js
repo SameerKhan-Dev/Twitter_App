@@ -12,7 +12,7 @@ const app = express();
 const morgan = require("morgan");
 const cookieSession = require("cookie-session");
 const database = require("./database/database");
-//var path = require('path');
+var path = require('path');
 
 
 var indexRouter = require('./routes/index');
