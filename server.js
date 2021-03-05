@@ -19,7 +19,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const add_new_user = require('./database/databaseHelpers/addNewUser');
 const check_unique_userName = require('./database/databaseHelpers/checkUniqueUserName');
-
+const get_user_by_email = require ('.database/databaseHelpers/getUserByEmail');
 
 /*
     * Have correct formatting
