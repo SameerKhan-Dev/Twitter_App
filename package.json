@@ -3,12 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "test": "mocha",
     "start": "node server.js",
     "local": "./node_modules/.bin/nodemon -L --ignore public/",
     "db:reset": "node bin/resetdb.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "bindings": "^1.5.0",
     "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
     "cookie-parser": "~1.4.4",
@@ -22,7 +24,10 @@
     "pg-native": "^3.0.0"
   },
   "devDependencies": {
+    "chai": "^4.3.3",
+    "chai-http": "^4.3.0",
     "dotenv": "^8.2.0",
+    "mocha": "^8.3.0",
     "nodemon": "^2.0.7"
   }
 }

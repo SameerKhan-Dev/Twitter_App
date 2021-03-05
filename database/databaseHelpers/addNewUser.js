@@ -5,7 +5,7 @@ const addNewUser = function (userName, email, password) {
     .query(
       `
       INSERT INTO users (userName, email, password)
-      VALUES ($1, $2, $3, $4, $5)
+      VALUES ($1, $2, $3)
       RETURNING *;`, [userName, email, password]
     )
     .then((res) => {

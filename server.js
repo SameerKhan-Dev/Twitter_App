@@ -17,6 +17,7 @@ const bcrypt = require('bcrypt');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const addNewUser = require('./database/databaseHelpers/addNewUser');
 
 /*
     * Have correct formatting
@@ -124,8 +125,15 @@ app.use('/users', usersRouter);
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });
-app.get("/hello", (req,res) => {
+app.post("/users/new", async (req,res) => {
 
+  try {
+    const userName = req.body.userName;
+    const email = req.body.email;
+    const hashedPassword = await bcrypt.hash(req.body.password, 10); 
+  } catch {
+    res.status(500).send();
+  }  
     res.send("Hello There!");
 });
 /*
