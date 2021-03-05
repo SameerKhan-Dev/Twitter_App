@@ -20,6 +20,7 @@ var usersRouter = require('./routes/users');
 const add_new_user = require('./database/databaseHelpers/addNewUser');
 const check_unique_userName = require('./database/databaseHelpers/checkUniqueUserName');
 
+
 /*
     * Have correct formatting
 
@@ -139,14 +140,24 @@ app.post("/users/new", async (req,res) => {
         .then((response) => {
           console.log("RESPONSE FROM check_unique_userName is: ", response);
           // means unique userName
-          if(response){
+          if(response.length > 0){
             //console.log("inside valid response");
             res.status(400).send("invalid registration - username already exists");
-
             //res.send("valid registration");
           } else {
-            res.status(200).send("valid registration, username is good!");
+            add_new_user(userName, email, hashedPassword)
+              .then((response) => {
+                if(response){
+                  req.session.user_id = response[0].id;
+                  res.status(200).send("registration successful");
+                }
+              })
+              .catch((err) => {
+                res.status(500).send("server error");
+              })
           }
+        }).catch (err => {
+          res.status(500).send("server error");
         })
     } else {
       res.status(400).send("incomplete - user registration form - you must specify userName, email and password to register");

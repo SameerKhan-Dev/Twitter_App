@@ -5,6 +5,10 @@ const { assert, expect } = require("chai");
 // Assertion Style
 chai.should();
 chai.use(chaiHttp);
+const resetdb = require('../bin/resetdb.js');
+
+resetdb();
+
 
 describe('Registration Tests', () => {
 
@@ -19,7 +23,7 @@ describe('Registration Tests', () => {
             email: "mike@email.com",
             password: "helloWorld"
         }
-        xit("It should return error if userName is missing when registering", (done) => {
+        it("It should return error if userName is missing when registering", (done) => {
             chai.request(server)
                 .post("/users/new")
                 .send(userOne)
@@ -54,7 +58,7 @@ describe('Registration Tests', () => {
             password: "helloWorld"
         }
 
-        xit("It should return error if email is missing when registering", (done) => {
+        it("It should return error if email is missing when registering", (done) => {
             chai.request(server)
                 .post("/users/new")
                 .send(userThree)
@@ -71,7 +75,7 @@ describe('Registration Tests', () => {
             password: null
         }
 
-        xit("It should return error if password is missing when registering", (done) => {
+        it("It should return error if password is missing when registering", (done) => {
             chai.request(server)
                 .post("/users/new")
                 .send(userFour)
@@ -88,13 +92,13 @@ describe('Registration Tests', () => {
             password: "helloWorld"
         }
 
-       xit("It should return success message when successfully registered", (done) => {
+       it("It should return success message when successfully registered", (done) => {
             chai.request(server)
                 .post("/users/new")
                 .send(userFive)
                 .end((err, response) => {
                     response.should.have.status(200);
-                    assert.strictEqual(response.text, "successful registration");
+                    assert.strictEqual(response.text, "registration successful");
                     done();
                 });
         })
@@ -103,13 +107,13 @@ describe('Registration Tests', () => {
             email: "jack@email.com",
             password: "helloWorld2"
         }
-        xit("It should verify if cookie is present in response header", (done) => {
+        it("It should verify if cookie is present in response header", (done) => {
             chai.request(server)
                 .post("/users/new")
                 .send(userSix)
                 .end((err, response) => {
-                    response.should.have.status(500);
-                    //expect(response).to.have.cookie('user_id');
+                    response.should.have.status(200);
+                    expect(response).to.have.cookie('user_id');
                     done();
                 });
         })
