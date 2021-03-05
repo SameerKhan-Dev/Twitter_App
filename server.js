@@ -130,7 +130,11 @@ app.post("/users/new", async (req,res) => {
   try {
     const userName = req.body.userName;
     const email = req.body.email;
-    const hashedPassword = await bcrypt.hash(req.body.password, 10); 
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    
+    
+
+    
   } catch {
     res.status(500).send();
   }  
