@@ -125,20 +125,23 @@ app.use('/users', usersRouter);
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });
-app.post("/users/new", async (req,res) => {
 
+app.post("/users/new", async (req,res) => {
   try {
     const userName = req.body.userName;
     const email = req.body.email;
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    
-    
+    if(req.body.password !== null && userName !== null && email !== null){
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    } else {
 
-    
-  } catch {
+      res.status(400).send("incomplete - user registration form - you must specify userName, email and password to register");
+    }
+    res.send("Hello There!");
+  } 
+  catch (error) {
     res.status(500).send();
   }  
-    res.send("Hello There!");
+ 
 });
 /*
 Create new user

@@ -24,9 +24,11 @@ describe('Registration Tests', () => {
                 .post("/users/new")
                 .send(userOne)
                 .end((err, response) => {
-                    response.body.should.have.status(401);
-                    assert.strictEqual(response.body, "Invalid registration - missing userName.");
-            });
+                    response.should.have.status(400);
+                    console.log("RESPONSE IS: ", response);
+                    assert.strictEqual(response.text, "incomplete - user registration form - you must specify userName, email and password to register");
+                done();
+                });
         })
 
         const userTwo = {
@@ -38,11 +40,12 @@ describe('Registration Tests', () => {
         it("It should return error if userName is not unique", (done) => {
             chai.request(server)
                 .post("/users/new")
-                .send(userOne)
+                .send(userTwo)
                 .end((err, response) => {
-                    response.body.should.have.status(401);
-                    assert.strictEqual(response.body, "Invalid registration - missing userName.");
-            });
+                    response.should.have.status(400);
+                    assert.strictEqual(response.text, "invalid registration - username already exists");
+                done();
+                });
         })
 
         const userThree = {
@@ -56,9 +59,10 @@ describe('Registration Tests', () => {
                 .post("/users/new")
                 .send(userThree)
                 .end((err, response) => {
-                    response.body.should.have.status(401);
-                    assert.strictEqual(response.body, "Invalid registration - missing email.");
-            });
+                    response.should.have.status(400);
+                    assert.strictEqual(response.text, "incomplete - user registration form - you must specify userName, email and password to register");
+                    done();
+                });
         })
 
         const userFour = {
@@ -70,11 +74,12 @@ describe('Registration Tests', () => {
         it("It should return error if password is missing when registering", (done) => {
             chai.request(server)
                 .post("/users/new")
-                .send(userOne)
+                .send(userFour)
                 .end((err, response) => {
-                    response.body.should.have.status(401);
-                    assert.strictEqual(response.body, "Invalid registration - missing password");
-            });
+                    response.should.have.status(400);
+                    assert.strictEqual(response.text, "incomplete - user registration form - you must specify userName, email and password to register");
+                    done();
+                });
         })
 
         const userFive = {
@@ -86,11 +91,12 @@ describe('Registration Tests', () => {
         it("It should return success message when successfully registered", (done) => {
             chai.request(server)
                 .post("/users/new")
-                .send(userOne)
+                .send(userFive)
                 .end((err, response) => {
-                    response.body.should.have.status(200);
-                    assert.strictEqual(response.body, "successful registration");
-            });
+                    response.should.have.status(200);
+                    assert.strictEqual(response.text, "successful registration");
+                    done();
+                });
         })
         const userSix = {
             userName: "jack101",
@@ -100,12 +106,12 @@ describe('Registration Tests', () => {
         it("It should verify if cookie is present in response header", (done) => {
             chai.request(server)
                 .post("/users/new")
-                .send(userOne)
+                .send(userSix)
                 .end((err, response) => {
-                    response.body.should.have.status(500);
-                    expect(response).to.have.cookie('user_id');
-            });
+                    response.should.have.status(500);
+                    //expect(response).to.have.cookie('user_id');
+                    done();
+                });
         })
-
     })
 })
