@@ -17,7 +17,8 @@ const bcrypt = require('bcrypt');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-const addNewUser = require('./database/databaseHelpers/addNewUser');
+const add_new_user = require('./database/databaseHelpers/addNewUser');
+const check_unique_userName = require('./database/databaseHelpers/checkUniqueUserName');
 
 /*
     * Have correct formatting
@@ -132,16 +133,30 @@ app.post("/users/new", async (req,res) => {
     const email = req.body.email;
     if(req.body.password !== null && userName !== null && email !== null){
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    } else {
 
+      // check if userName is unique
+      check_unique_userName(userName)
+        .then((response) => {
+          console.log("RESPONSE FROM check_unique_userName is: ", response);
+          // means unique userName
+          if(response){
+            //console.log("inside valid response");
+            res.status(400).send("invalid registration - username already exists");
+
+            //res.send("valid registration");
+          } else {
+            res.status(200).send("valid registration, username is good!");
+          }
+        })
+    } else {
       res.status(400).send("incomplete - user registration form - you must specify userName, email and password to register");
     }
-    res.send("Hello There!");
+    
   } 
   catch (error) {
     res.status(500).send();
   }  
- 
+
 });
 /*
 Create new user
