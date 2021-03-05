@@ -107,8 +107,6 @@ GET All messages for a specific conversation
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-//pp.use(cookieParser());
-//app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static("public"));
 app.use(
@@ -128,6 +126,11 @@ app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });
 
+app.post("/login", (req, res) => {
+  res.send("welcome to the login post route");
+
+}); 
+
 app.post("/users/new", async (req,res) => {
   try {
     const userName = req.body.userName;
@@ -141,9 +144,7 @@ app.post("/users/new", async (req,res) => {
           console.log("RESPONSE FROM check_unique_userName is: ", response);
           // means unique userName
           if(response.length > 0){
-            //console.log("inside valid response");
             res.status(400).send("invalid registration - username already exists");
-            //res.send("valid registration");
           } else {
             add_new_user(userName, email, hashedPassword)
               .then((response) => {
