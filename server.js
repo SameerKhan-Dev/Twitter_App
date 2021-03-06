@@ -141,7 +141,12 @@ io.on('connection', socket => {
 
   // need a function that will check who is the client, who does socket belong to
 
-  //
+  // need a function to get all conversations belonging to a user
+  // need a function to get all messages belonging to a user
+  // need a function to get all messages belonging to a conversation
+  // need a function to add message 
+  // need a function to check if a conversation between 2 users already exists
+  // need a function to add a new conversation if it doesnt exist. 
 
 
   // dat schema
