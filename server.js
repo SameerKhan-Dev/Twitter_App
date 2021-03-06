@@ -1,6 +1,7 @@
 // load .env data into process.env
 require("dotenv").config();
 
+
 // Web server config
 const PORT = process.env.PORT || 8080;
 const ENV = process.env.ENV || "development";
@@ -20,6 +21,7 @@ var usersRouter = require('./routes/users');
 const add_new_user = require('./database/databaseHelpers/addNewUser');
 const check_unique_userName = require('./database/databaseHelpers/checkUniqueUserName');
 const get_user_by_email = require ('./database/databaseHelpers/getUserByEmail');
+
 
 /*
     * Have correct formatting
@@ -115,16 +117,16 @@ app.use(
       keys: [
         "b6d0e7eb-8c4b-4ae4-8460-fd3a08733dcb",
         "1fb2d767-ffbf-41a6-98dd-86ac2da9392e",
+
       ],
     })
   );
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-});
+app.get('/index', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+})
 
 app.post("/api/login", (req, res) => {
   
@@ -221,6 +223,26 @@ app.post("/users/new", async (req,res) => {
     res.status(500).send();
   }  
 });
+
+let server = app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+});
+
+console.log('server:'. server);
+const io = require('socket.io')(server, {
+    cors: {
+      origin: false
+    }
+});
+
+io.on('connection', socket => {
+  socket.on('event', data => { 
+    console.log('msg received:', data);
+    socket.emit('response', 'hello there!')
+  });
+  console.log("Socket recevied conection!");
+});
+
 /*
 Create new user
 POST  /users/new
