@@ -1,6 +1,6 @@
 const db = require("../database");
 
-const addMessage = function (conversation_id, sender_id, receiver_id, description){
+const addMessage = function (conversation_id, sender_id, receiver_id, description) {
   return db
     .query(
       `
@@ -10,7 +10,6 @@ const addMessage = function (conversation_id, sender_id, receiver_id, descriptio
     )
     .then((res) => {
       if (res.rows) {
-        //console.log("res.rows is, ", res.rows);
         return res.rows;
       } else {
         console.log("null returned");
@@ -20,15 +19,3 @@ const addMessage = function (conversation_id, sender_id, receiver_id, descriptio
 };
 
 module.exports = addMessage;
-
-/* messages Table 
-DROP TABLE IF EXISTS messages CASCADE;
-CREATE TABLE messages (
-  id SERIAL PRIMARY KEY NOT NULL,
-  conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE,
-  sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-  receiver_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-  description TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT NOW()
-);
-*/

@@ -1,34 +1,23 @@
 const express = require("express");
 var router = express.Router();
-const add_new_user = require('../database/databaseHelpers/addNewUser');
-const check_unique_userName = require('../database/databaseHelpers/checkUniqueUserName');
-const get_user_by_email = require('../database/databaseHelpers/getUserByEmail');
-const add_message = require('../database/databaseHelpers/addMessage');
-const get_conversation_between_users = require('../database/databaseHelpers/getConversationBetweenUsers');
-const create_new_conversation = require('../database/databaseHelpers/createNewConversation');
-const get_all_conversations_for_user = require('../database/databaseHelpers/getAllConversationsForUser');
-const get_all_messages_for_conversation = require('../database/databaseHelpers/getAllMessagesForConversation');
-const get_all_messages_of_user = require('../database/databaseHelpers/getAllMessagesOfUser');
 const add_new_tweet = require('../database/databaseHelpers/addNewTweet');
 const get_tweet_owner = require('../database/databaseHelpers/getTweetOwner');
 const update_tweet = require('../database/databaseHelpers/updateTweet');
 const delete_tweet = require('../database/databaseHelpers/deleteTweet');
 const get_tweet = require('../database/databaseHelpers/getTweet');
 const get_all_tweets_for_user = require('../database/databaseHelpers/getAllTweetsForUser');
-const getUserById = require("../database/databaseHelpers/getUserById");
 
 
-// route handler for posting a tweet to /api/tweets
+// route handler for posting a tweet - /api/tweets
 router.post("/", (req, res) => {
 
   const user_id = req.session.user_id;
-  // validate cookie present in request (i.e authenticated user)
+  // check session-cookie present in request (i.e authenticated user)
   if (user_id) {
     const description = req.body.description;
     if (description === null) {
       res.status(400).send("error description can not be empty");
     } else {
-
       //push tweet into database
       add_new_tweet(user_id, description)
         .then(response => {
@@ -41,18 +30,17 @@ router.post("/", (req, res) => {
           res.status(500).send("failed server error");
         })
     }
-
   } else {
     res.status(403).send("error - unauthorized access");
   }
 });
 
-// route handler for updating a tweet to /api/tweets/:id
+// route handler for updating a tweet - /api/tweets/:id
 router.put("/:id", (req, res) => {
 
   const user_id = req.session.user_id;
 
-  // validate cookie present in request (i.e authenticated user) before proceeding
+  // check session-cookie present in request (i.e authenticated user) before proceeding
   if (user_id) {
     const tweet_id = req.params.id;
     const description = req.body.description;
@@ -85,18 +73,18 @@ router.put("/:id", (req, res) => {
   }
 });
 
-
-// validate cookie present in request (i.e authenticated user)
+// route handler for deleting a specific tweet  - /api/tweets/:id
 router.delete("/:id", (req, res) => {
 
   const user_id = req.session.user_id;
+
+  // session-cookie in request (i.e authenticated user)
   if (user_id) {
     const tweet_id = req.params.id;
     const description = req.body.description;
 
     get_tweet_owner(tweet_id)
       .then(response => {
-
         if (response) {
           // validate current logged in user is the owner of tweet to allow deleting tweet
           if (user_id === response.creator_id) {
@@ -123,7 +111,7 @@ router.delete("/:id", (req, res) => {
   }
 });
 
-
+// route handler for getting a specific tweet from /api/tweets/:id
 // each tweet is a public accessible data, no authentication required to read/view.
 router.get('/:id', (req, res) => {
 
@@ -142,9 +130,8 @@ router.get('/:id', (req, res) => {
     })
 });
 
-/*
-GET All tweets for a User:
-*/
+
+// route handler for getting all publically available tweets for a specific user
 // user tweets are public
 router.get('/user_tweets/:id', (req, res) => {
   let creator_id = req.params.id;

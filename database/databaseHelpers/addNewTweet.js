@@ -10,7 +10,6 @@ const addNewTweet = function (creator_id, description) {
     )
     .then((res) => {
       if (res.rows) {
-        //console.log("res.rows is, ", res.rows);
         return res.rows;
       } else {
         console.log("null returned");

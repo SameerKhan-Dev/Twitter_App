@@ -55,7 +55,6 @@ let server = app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });
 
-console.log('server:'. server);
 const io = require('socket.io')(server, {
     cors: {
       origin: false
@@ -71,15 +70,15 @@ io.on('connection', socket => {
   //   msg: 'msg being sent'
   // }
   //
-  socket.on('message', data => {
-    console.log('msg received:', data);
-    console.log('socket.rooms1: ', socket.rooms);
-    
+
+  // receive message from a client, store it in message table and send message to the receiving user
+  socket.on('message', data => {  
     let conversation;
     // go add message to the database.
     getConversationBetweenUsers(data.srcUser, data.dstUser)
       .then(resConversation => {
          conversation = resConversation;
+         // create a conversation if it doesn't already exist
          if (!resConversation) {
            conversation = createNewConversation(data.srcUser, data.dstUser)
          }
@@ -93,20 +92,15 @@ io.on('connection', socket => {
     );
   })
 
-  socket.on('event', data => { 
-    console.log('msg received:', data);
-    socket.emit('response', 'hello there!')
-  });
-
+  // add the client to the user's room
   socket.on('register_client', userId => {
-    console.log('revieved register_client event')
     socket.join(`${userId}`);
     socket.emit('registered');
   });
-  console.log('socket.rooms: ', socket.rooms);
+
+  // let client know that server has received connection
   socket.emit('connected');
 
-  console.log("Socket received conection!");
 });
 
 module.exports = app;
