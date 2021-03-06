@@ -5,7 +5,7 @@ const addMessage = function (conversation_id, sender_id, receiver_id, descriptio
     .query(
       `
       INSERT INTO messages (conversation_id, sender_id, receiver_id, description)
-      VALUES ($1, $2, $3)
+      VALUES ($1, $2, $3, $4)
       RETURNING *;`, [conversation_id, sender_id, receiver_id, description]
     )
     .then((res) => {
@@ -17,7 +17,6 @@ const addMessage = function (conversation_id, sender_id, receiver_id, descriptio
         return null;
       }
     })
-    .catch((err) => console.log(err));
 };
 
 module.exports = addMessage;

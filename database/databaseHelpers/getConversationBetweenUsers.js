@@ -12,7 +12,7 @@ const getConversationBetweenUsers = function (sender_id, receiver_id) {
     .then((res) => {
       if (res.rows) {
         //console.log("res.rows is, ", res.rows);
-        return res.rows;
+        return res.rows[0];
       } else {
         console.log("null returned");
         return null;

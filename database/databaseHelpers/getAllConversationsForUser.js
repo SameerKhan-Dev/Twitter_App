@@ -4,8 +4,9 @@ const getAllConversationsForUser = function (user_id){
   return db
     .query(
       `
-      SELECT * FROM conversations
+      SELECT id, created_at, user_one_id, user_two_id FROM conversations
       WHERE user_one_id = $1 OR user_two_id = $1
+      ORDER BY created_at DESC
       ;`, [user_id]
     )
     .then((res) => {

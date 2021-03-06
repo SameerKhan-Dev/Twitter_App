@@ -28,9 +28,7 @@ GET /tweets/:id
 GET All tweets for a User:
 GET /users/:id/tweets
 
-GET ALL liked tweets for a user:
-GET /users/:id/likedTweets
-*/
+
 
 // load .env data into process.env
 

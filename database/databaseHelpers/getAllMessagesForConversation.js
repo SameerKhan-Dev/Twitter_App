@@ -4,8 +4,9 @@ const getAllMessagesForConversation = function (conversation_id){
   return db
     .query(
       `
-      SELECT * FROM messages
+      SELECT id, sender_id, receiver_id, created_at FROM messages
       WHERE conversation_id = $1
+      ORDER BY id DESC
       ;`, [conversation_id]
     )
     .then((res) => {
