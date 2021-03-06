@@ -22,11 +22,10 @@ CREATE TABLE tweets (
 );
 
 /* conversations Table */
-DROP TABLE IF EXISTS conversations CASCADE;
-CREATE TABLE conversations (
+DROP TABLE IF EXISTS rooms CASCADE;
+CREATE TABLE rooms (
   id SERIAL PRIMARY KEY NOT NULL,
-  sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-  receiver_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -34,9 +33,8 @@ CREATE TABLE conversations (
 DROP TABLE IF EXISTS messages CASCADE;
 CREATE TABLE messages (
   id SERIAL PRIMARY KEY NOT NULL,
-  conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE,
-  sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   receiver_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   description TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT NOW()
 );

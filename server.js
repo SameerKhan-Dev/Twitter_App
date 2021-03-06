@@ -16,8 +16,8 @@ const database = require("./database/database");
 var path = require('path');
 const bcrypt = require('bcryptjs');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var tweetsRouter = require('./routes/api-tweets');
+var apiRouter = require('./routes/api');
 const add_new_user = require('./database/databaseHelpers/addNewUser');
 const check_unique_userName = require('./database/databaseHelpers/checkUniqueUserName');
 const get_user_by_email = require ('./database/databaseHelpers/getUserByEmail');
@@ -122,8 +122,9 @@ app.use(
     })
   );
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/tweets', tweetsRouter);
+app.use('/api', apiRouter);
+
 app.get('/index', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
 })
@@ -236,12 +237,54 @@ const io = require('socket.io')(server, {
 });
 
 io.on('connection', socket => {
+
+  // need a function that will check who is the client, who does socket belong to
+
+  //
+
+
+  // dat schema
+  // {
+  //   dstUser: 'receiving user id',
+  //   srcUser: 'sending user id',
+  //   msg: 'msg being sent'
+  // }
+  //
+
+  socket.on('message', data => {
+    console.log('msg received with dstUser:', data.dstUser);
+    console.log('socket.rooms1: ', socket.rooms);
+    ///socket.emit('message', {damn: 'son'})
+    
+    socket.to(data.dstUser).emit('message', {srcUser: data.srcUser,  msg: 'echo:' + data.msg ? data.msg : ''});
+    //socket.to('1').emit('message', {damn1: 'son'})
+  })
+
   socket.on('event', data => { 
     console.log('msg received:', data);
     socket.emit('response', 'hello there!')
   });
+
+  socket.on('register_client', userId => {
+    console.log('revieved register_client event')
+    socket.join(userId);
+    socket.emit('registered');
+    //socket.emit('registered')
+  });
+  console.log('socket.rooms: ', socket.rooms);
+  socket.emit('connected');
+
   console.log("Socket recevied conection!");
 });
+
+
+
+
+
+
+
+
+
 
 /*
 Create new user
