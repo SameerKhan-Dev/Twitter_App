@@ -15,6 +15,7 @@ const update_tweet = require('../database/databaseHelpers/updateTweet');
 const delete_tweet = require('../database/databaseHelpers/deleteTweet');
 const get_tweet = require('../database/databaseHelpers/getTweet');
 const get_all_tweets_for_user = require('../database/databaseHelpers/getAllTweetsForUser');
+const getUserById = require("../database/databaseHelpers/getUserById");
 
 /*
 TWEETS:
@@ -58,8 +59,9 @@ router.get('/', function(req, res, next) {
 // post a tweet
 router.post("/",(req,res) => {
 
-  //const user_id = req.session.user_id;
-  const user_id = 1;
+  const user_id = req.session.user_id;
+  //console.log("INSIDE req.session: ", req.session);
+  //const user_id = 1;
   if(user_id){
     const description = req.body.description;
     if(description === null){
@@ -89,8 +91,8 @@ PUT /tweets/:id
 */
 router.put("/:id",(req,res) => {
 
-  //const user_id = req.session.user_id;
-  const user_id = 1;
+  const user_id = req.session.user_id;
+  //const user_id = 1;
   if(user_id){
     const tweet_id = req.params.id;
     const description = req.body.description;
@@ -131,8 +133,7 @@ DELETE /tweets/:id
 
 router.delete("/:id",(req,res) => {
 
-  //const user_id = req.session.user_id;
-  const user_id = 1;
+  const user_id = req.session.user_id;
   if(user_id){
     const tweet_id = req.params.id;
     const description = req.body.description;
@@ -159,6 +160,7 @@ router.delete("/:id",(req,res) => {
           return res.status(400).send("bad request, tweet does not exist");
         }
       }).catch(err => {
+        console.log('err:', err)
         return res.status(500).send("server error");
       })
   } else {
@@ -187,7 +189,6 @@ router.get('/:id', (req, res) => {
       res.status(500).send("server error");
     })
 });
-
 
 /*
 GET All tweets for a User:
