@@ -1,12 +1,12 @@
 const db = require("../database");
 
-const getAllMessagesForConversation = function (conversation_id){
+const getAllMessagesOfUser = function (user_id){
   return db
     .query(
       `
       SELECT * FROM messages
-      WHERE conversation_id = $1
-      ;`, [conversation_id]
+      WHERE sender_id = $1 OR receiver_id = $1
+      ;`, [user_id]
     )
     .then((res) => {
       if (res.rows) {
@@ -20,4 +20,4 @@ const getAllMessagesForConversation = function (conversation_id){
     .catch((err) => console.log(err));
 };
 
-module.exports = getAllMessagesForConversation;
+module.exports = getAllMessagesOfUser;

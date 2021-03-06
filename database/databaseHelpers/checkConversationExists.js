@@ -1,12 +1,13 @@
 const db = require("../database");
 
-const getAllMessagesForConversation = function (conversation_id){
+const checkConversationBetweenUsers = function (sender_id, receiver_id) {
   return db
     .query(
       `
-      SELECT * FROM messages
-      WHERE conversation_id = $1
-      ;`, [conversation_id]
+      SELECT * FROM conversations
+      WHERE sender_id = $1 AND receiver_id = $2
+      OR sender_id = $2 AND receiver_id = $1`,
+      [sender_id, receiver_id]
     )
     .then((res) => {
       if (res.rows) {
@@ -20,4 +21,4 @@ const getAllMessagesForConversation = function (conversation_id){
     .catch((err) => console.log(err));
 };
 
-module.exports = getAllMessagesForConversation;
+module.exports = checkConversationExists;

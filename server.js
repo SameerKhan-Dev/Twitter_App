@@ -145,7 +145,7 @@ io.on('connection', socket => {
   // need a function to get all messages belonging to a user
   // need a function to get all messages belonging to a conversation
   // need a function to add message 
-  // need a function to check if a conversation between 2 users already exists
+  // need a function to check if a conversation between 2 users already exists, and get that conversation_id.
   // need a function to add a new conversation if it doesnt exist. 
 
 
