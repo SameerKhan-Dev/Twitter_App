@@ -25,7 +25,7 @@ describe('Registration Tests', () => {
         }
         it("It should return error if userName is missing when registering", (done) => {
             chai.request(server)
-                .post("/users/new")
+                .post("/api/users/new")
                 .send(userOne)
                 .end((err, response) => {
                     response.should.have.status(400);
@@ -42,7 +42,7 @@ describe('Registration Tests', () => {
 
         it("It should return error if userName is not unique", (done) => {
             chai.request(server)
-                .post("/users/new")
+                .post("/api/users/new")
                 .send(userTwo)
                 .end((err, response) => {
                     //response.should.have.status(400);
@@ -59,7 +59,7 @@ describe('Registration Tests', () => {
 
         it("It should return error if email is missing when registering", (done) => {
             chai.request(server)
-                .post("/users/new")
+                .post("/api/users/new")
                 .send(userThree)
                 .end((err, response) => {
                     response.should.have.status(400);
@@ -76,7 +76,7 @@ describe('Registration Tests', () => {
 
         it("It should return error if password is missing when registering", (done) => {
             chai.request(server)
-                .post("/users/new")
+                .post("/api/users/new")
                 .send(userFour)
                 .end((err, response) => {
                     response.should.have.status(400);
@@ -93,7 +93,7 @@ describe('Registration Tests', () => {
 
        it("It should return success message when successfully registered", (done) => {
             chai.request(server)
-                .post("/users/new")
+                .post("/api/users/new")
                 .send(userFive)
                 .end((err, response) => {
                     response.should.have.status(200);
