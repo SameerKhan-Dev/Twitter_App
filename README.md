@@ -23,7 +23,7 @@ This app allows users to share messages to the public and enables chatting betwe
       1. Create DB with name `twitter_app_db`
   3. Update `.env` file with the correct credentials
   3. Run `npm install`to install node dependencies
-  4. To reset the DB with seeded data run `npm run db:reset`
+  4. To setup the PostgreSQL DB with Tables and seeded data run `npm run db:reset`
   5. Run `npm run start` to run server
   6. Run `npm run test` to run unit tests
 
