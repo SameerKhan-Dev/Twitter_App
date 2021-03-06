@@ -19,8 +19,10 @@ var path = require('path');
 const bcrypt = require('bcryptjs');
 const addMessage = require ('./database/databaseHelpers/addMessage');
 
-var tweetsRouter = require('./routes/api-tweets.js');
-var apiRouter = require('./routes/api.js');
+const tweetsRouter = require('./routes/api-tweets.js');
+const apiRouter = require('./routes/api.js');
+const usersRouter = require('./routes/users.js');
+
 const getAllConversationsForUser = require("./database/databaseHelpers/getAllConversationsForUser");
 const getConversationBetweenUsers = require("./database/databaseHelpers/getConversationBetweenUsers");
 const createNewConversation = require("./database/databaseHelpers/createNewConversation");
@@ -125,6 +127,7 @@ app.use(
 
 app.use('/api/tweets', tweetsRouter);
 app.use('/api', apiRouter);
+app.use('/api/users', usersRouter);
 
 app.get('/index', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));

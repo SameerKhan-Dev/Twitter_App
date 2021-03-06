@@ -32,7 +32,7 @@ VALUES
                 .send(userOne)
                 .end((err, response) => {
                     response.should.have.status(200);
-                    console.log("response.header is: ", response.header);
+                    //console.log("response.header is: ", response.header);
                     cookieSession = response.header['set-cookie'];
                     assert.strictEqual(cookieSession.length > 0, true);
 
@@ -41,7 +41,7 @@ VALUES
                     .send()
                     .end((err, response) => {
                         //response.should.have.status(200);
-                        console.log("response.header is: ", response.header);
+                        //console.log("response.header is: ", response.header);
                         cookieSession = response.header['set-cookie'];
                         assert.strictEqual(cookieSession, undefined);
                         done();

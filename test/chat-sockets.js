@@ -38,7 +38,7 @@ describe('Chat Socket Tests', () => {
         });
 
         client1.on('registered', () => {
-            console.log('socket1 received registered event')
+            //console.log('socket1 received registered event')
             
             // Set up client2 connections
             client2 = io.connect(socketUrl, options);

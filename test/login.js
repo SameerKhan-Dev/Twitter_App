@@ -32,7 +32,7 @@ VALUES
                 .send(userOne)
                 .end((err, response) => {
                     //response.should.have.status(400);
-                    console.log("RESPONSE IS: ", response);
+                    //console.log("RESPONSE IS: ", response);
                     assert.strictEqual(response.text, "invalid email - email is not registered");
                 done();
                 });
@@ -67,7 +67,7 @@ VALUES
                 .send(userThree)
                 .end((err, response) => {
                     response.should.have.status(200);
-                    console.log("response.header is: ", response.header);
+                    //console.log("response.header is: ", response.header);
                     assert.strictEqual(response.text, "login successful");
                     done();
                 });
@@ -84,7 +84,7 @@ VALUES
                 .send(userFour)
                 .end((err, response) => {
                     response.should.have.status(200);
-                    console.log("response.header is: ", response.header);
+                    //console.log("response.header is: ", response.header);
                     let cookiesSession = response.header['set-cookie'];
                     assert.strictEqual(cookiesSession.length > 0, true);
                     done();

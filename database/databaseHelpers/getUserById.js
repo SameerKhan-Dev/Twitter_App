@@ -1,12 +1,12 @@
 const db = require("../database");
 
-const getUserByEmail = function (email) {
+const getUserById = function (id) {
   return db
     .query(
       `
       SELECT id, username FROM users
-      WHERE users.email = $1;`,
-      [email]
+      WHERE users.id = $1;`,
+      [id]
     )
     .then((res) => {
       if (res.rows) {
@@ -20,4 +20,4 @@ const getUserByEmail = function (email) {
     .catch((err) => console.log(err));
 };
 
-module.exports = getUserByEmail;
+module.exports = getUserById;
