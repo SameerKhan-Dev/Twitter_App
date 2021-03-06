@@ -12,10 +12,6 @@ resetdb();
 
 describe('Registration Tests', () => {
 
-    /**
-     * 
-     * Test the POST ROUTE
-     */
     describe("POST /users/new", () =>{
 
         const userOne = {
@@ -45,7 +41,6 @@ describe('Registration Tests', () => {
                 .post("/api/users/new")
                 .send(userTwo)
                 .end((err, response) => {
-                    //response.should.have.status(400);
                     assert.strictEqual(response.text, "invalid registration - username already exists");
                 done();
                 });
