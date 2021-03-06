@@ -72,20 +72,7 @@ router.post("/login", (req, res) => {
   router.post("/logout", (req, res) => {
     // clear the cookies when logged out
     req.session = null;
-    /*
-    new Promise ((resolve, reject) => {
-
-      req.session.destroy((err) => {
-        if(err) reject(err)
-
-        res.clearCookie("user_id");
-
-        resolve();
-      });
-
-    })
-    */
-    res.clearCookie("user_id");
+        
     res.send("logout successful");
   });
 

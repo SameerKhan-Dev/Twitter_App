@@ -33,8 +33,7 @@ const getAllMessagesForConversation = require("../database/databaseHelpers/getAl
 // get list of conversations belonging to logged-in user
 router.get('/conversations/user', (req, res) => {
 
-    //let user_id = req.session.user_id;
-    let user_id = 1;
+    let user_id = req.session.user_id;
 
     if(user_id){
         get_all_conversations_for_user(user_id)
