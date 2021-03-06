@@ -16,7 +16,7 @@ var options = {
 }
 
 
-describe('Chat Socket Tests', () => {
+describe('Socket Tests For Chat', () => {
     beforeEach(() => resetdb());
 
     it("Send a message to chat", done => {

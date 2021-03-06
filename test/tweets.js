@@ -15,7 +15,7 @@ const SESSION_KEY_SECONDARY = process.env.SESSION_KEY_SECONDARY;
 resetdb();
 
 
-describe('Tweets Tests', () => {
+describe('Tweets Endpoints Tests', () => {
 
     /**
      * 
