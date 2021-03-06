@@ -24,3 +24,10 @@ content-Type: application/json
 {
     "description": "HELLLLLLLOOOOOOO PEOPLE"
 }
+
+DELETE http://localhost:8080/api/tweets/1
+content-Type: application/json
+
+{
+    
+}

@@ -13,6 +13,7 @@ const add_new_tweet = require('../database/databaseHelpers/addNewTweet');
 const get_tweet_owner = require('../database/databaseHelpers/getTweetOwner');
 const update_tweet = require('../database/databaseHelpers/updateTweet');
 const delete_tweet = require('../database/databaseHelpers/deleteTweet');
+const get_tweet = require('../database/databaseHelpers/getTweet');
 
 /*
 TWEETS:
@@ -163,8 +164,34 @@ router.delete("/:id",(req,res) => {
       return res.status(403).send("error - unauthorized access");
   }
 });
+/*
+GET A SPECIFIC TWEET:
+GET /tweets/:id
+*/
+
+// each tweet is a public accessible data, no authentication required to read/view.
+router.get('/:id', (req, res) => {
+
+  let tweet_id = req.params.id;
+
+  get_tweet(tweet_id)
+    .then(response => {
+      if(response){ 
+        res.status(200).send(response);
+      } else {
+        res.status(400).send("bad request. tweet does not exist");
+      }
+    })
+    .catch(err => {
+      res.status(500).send("server error");
+    })
+});
 
 
+/*
+GET All tweets for a User:
+GET /users/:id/tweets
+*/
 
 
 
