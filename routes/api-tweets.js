@@ -14,6 +14,7 @@ const get_tweet_owner = require('../database/databaseHelpers/getTweetOwner');
 const update_tweet = require('../database/databaseHelpers/updateTweet');
 const delete_tweet = require('../database/databaseHelpers/deleteTweet');
 const get_tweet = require('../database/databaseHelpers/getTweet');
+const get_all_tweets_for_user = require('../database/databaseHelpers/getAllTweetsForUser');
 
 /*
 TWEETS:
@@ -177,9 +178,9 @@ router.get('/:id', (req, res) => {
   get_tweet(tweet_id)
     .then(response => {
       if(response){ 
-        res.status(200).send(response);
+        return res.status(200).send(response);
       } else {
-        res.status(400).send("bad request. tweet does not exist");
+        return res.status(400).send("bad request. tweet does not exist");
       }
     })
     .catch(err => {
@@ -190,11 +191,23 @@ router.get('/:id', (req, res) => {
 
 /*
 GET All tweets for a User:
-GET /users/:id/tweets
 */
+// user tweets are public
+router.get('/user_tweets/:id', (req, res) => {
+  let creator_id = req.params.id;
 
-
-
+  get_all_tweets_for_user(creator_id)
+    .then(response => {
+      if(response){ 
+        return res.status(200).send(response);
+      } else {
+        return res.status(400).send("bad request. user not found.");
+      }
+    })
+    .catch(err => {
+      res.status(500).send("server error");
+    })
+});
 
 
 module.exports = router;
