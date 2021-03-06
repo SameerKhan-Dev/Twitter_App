@@ -1,0 +1,9 @@
+
+POST http://localhost:8080/api/users/new
+content-Type: application/json
+
+{
+    "userName": null,
+    "email": "mike@email.com",
+    "password": "helloWorld"   
+}

@@ -5,6 +5,8 @@ require("dotenv").config();
 // Web server config
 const PORT = process.env.PORT || 8080;
 const ENV = process.env.ENV || "development";
+const SESSION_KEY_PRIMARY = process.env.SESSION_KEY_PRIMARY;
+const SESSION_KEY_SECONDARY = process.env.SESSION_KEY_SECONDARY;
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -22,7 +24,6 @@ var apiRouter = require('./routes/api.js');
 const getAllConversationsForUser = require("./database/databaseHelpers/getAllConversationsForUser");
 const getConversationBetweenUsers = require("./database/databaseHelpers/getConversationBetweenUsers");
 const createNewConversation = require("./database/databaseHelpers/createNewConversation");
-
 
 /*
     * Have correct formatting
@@ -116,9 +117,8 @@ app.use(
     cookieSession({
       name: "session",
       keys: [
-        "b6d0e7eb-8c4b-4ae4-8460-fd3a08733dcb",
-        "1fb2d767-ffbf-41a6-98dd-86ac2da9392e",
-
+        SESSION_KEY_PRIMARY,
+        SESSION_KEY_SECONDARY,
       ],
     })
   );
@@ -151,20 +151,22 @@ io.on('connection', socket => {
   // }
   //
   socket.on('message', data => {
-    console.log('msg received with dstUser:', data.dstUser);
+    console.log('msg received:', data);
     console.log('socket.rooms1: ', socket.rooms);
     
+    let conversation;
     // go add message to the database.
     getConversationBetweenUsers(data.srcUser, data.dstUser)
-      .then(conversation => {
-         if (!conversation) {
-           return createNewConversation(data.srcUser, data.dstUser)
+      .then(resConversation => {
+         conversation = resConversation;
+         if (!resConversation) {
+           conversation = createNewConversation(data.srcUser, data.dstUser)
          }
          return conversation;
       })
       .then(conversation => addMessage(conversation.id, data.srcUser, data.dstUser, data.msg))
       .then(response => 
-        socket.to(`${data.dstUser}`).emit('message', {srcUser: data.srcUser,  msg: data.msg})
+        socket.to(`${data.dstUser}`).emit('message', {srcUser: data.srcUser, msg: data.msg, cId: conversation.id, mId: response.id})
       ).catch(err => 
         console.log('failed to send messsage to user with err:', err)
     );

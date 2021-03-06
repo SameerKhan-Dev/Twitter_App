@@ -25,9 +25,6 @@ socket1.on('connected', () => {
 // socket 2 mimicking second user
 //==============================================
 var socket2 = io.connect('http://localhost:8080', { transport: ['websocket']});
-socket2.on('registered', data => {
-    console.log('socket2 received registered event')
-})
 
 socket2.on('registered', () => {
     console.log('socket2 received registered event')
