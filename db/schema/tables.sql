@@ -25,8 +25,8 @@ CREATE TABLE tweets (
 DROP TABLE IF EXISTS conversations CASCADE;
 CREATE TABLE conversations (
   id SERIAL PRIMARY KEY NOT NULL,
-  sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-  receiver_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_one_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_two_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT NOW()
 );
 

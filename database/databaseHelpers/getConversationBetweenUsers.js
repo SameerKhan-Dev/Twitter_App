@@ -1,12 +1,13 @@
 const db = require("../database");
 
-const checkUniqueUserName = function (userName) {
+const getConversationBetweenUsers = function (sender_id, receiver_id) {
   return db
     .query(
       `
-      SELECT * FROM users
-      WHERE users.userName = $1;`,
-      [userName]
+      SELECT * FROM conversations
+      WHERE (user_one_id = $1 AND user_two_id = $2)
+      OR (user_one_id = $2 AND user_two_id = $1)`,
+      [sender_id, receiver_id]
     )
     .then((res) => {
       if (res.rows) {
@@ -20,5 +21,5 @@ const checkUniqueUserName = function (userName) {
     .catch((err) => console.log(err));
 };
 
-module.exports = checkUniqueUserName;
+module.exports = getConversationBetweenUsers;
 

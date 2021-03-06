@@ -5,7 +5,7 @@ const getAllConversationsForUser = function (user_id){
     .query(
       `
       SELECT * FROM conversations
-      WHERE sender_id = $1 OR receiver_id = $1
+      WHERE user_one_id = $1 OR user_two_id = $1
       ;`, [user_id]
     )
     .then((res) => {

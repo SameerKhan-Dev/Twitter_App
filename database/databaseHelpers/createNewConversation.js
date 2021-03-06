@@ -1,13 +1,12 @@
 const db = require("../database");
 
-const checkConversationBetweenUsers = function (sender_id, receiver_id) {
+const createNewConversation = function (sender_id, receiver_id) {
   return db
     .query(
       `
-      SELECT * FROM conversations
-      WHERE sender_id = $1 AND receiver_id = $2
-      OR sender_id = $2 AND receiver_id = $1`,
-      [sender_id, receiver_id]
+      INSERT INTO conversations (user_one_id, user_two_id)
+      VALUES ($1, $2)
+      RETURNING *;`, [user_one_id, user_two_id]
     )
     .then((res) => {
       if (res.rows) {
@@ -21,4 +20,5 @@ const checkConversationBetweenUsers = function (sender_id, receiver_id) {
     .catch((err) => console.log(err));
 };
 
-module.exports = checkConversationExists;
+module.exports = createNewConversation;
+

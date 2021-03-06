@@ -15,9 +15,17 @@ const cookieSession = require("cookie-session");
 const database = require("./database/database");
 var path = require('path');
 const bcrypt = require('bcryptjs');
+const add_message = require ('../database/databaseHelpers/addMessage');
+const check_conversation_exists = require ('../database/databaseHelpers/checkConversationExists');
+const create_new_conversation = require ('../database/databaseHelpers/createNewConversation');
+const get_all_conversations_for_user = require ('../database/databaseHelpers/getAllConversationsForUser');
+const get_all_messages_for_conversation = require ('../database/databaseHelpers/getAllMessagesForConversation');
+const get_all_messages_of_user = require ('../database/databaseHelpers/getAllMessagesOfUser');
 
 var tweetsRouter = require('./routes/api-tweets.js');
 var apiRouter = require('./routes/api.js');
+const getAllConversationsForUser = require("./database/databaseHelpers/getAllConversationsForUser");
+const addMessage = require("./database/databaseHelpers/addMessage");
 
 
 /*
@@ -146,11 +154,19 @@ io.on('connection', socket => {
   // need a function to get all messages belonging to a conversation
   // need a function to add message 
   // need a function to check if a conversation between 2 users already exists, and get that conversation_id.
-  // need a function to add a new conversation if it doesnt exist. 
-
+  // need a function to add a new conversation if it doesnt exist. \
+  /*
+  const add_message = require ('../database/databaseHelpers/addMessage');
+  const check_conversation_exists = require ('../database/databaseHelpers/checkConversationExists');
+  const create_new_conversation = require ('../database/databaseHelpers/createNewConversation');
+  const get_all_conversations_for_user = require ('../database/databaseHelpers/getAllConversationsForUser');
+  const get_all_messages_for_conversation = require ('../database/databaseHelpers/getAllMessagesForConversation');
+  const get_all_messages_of_user = require ('../database/databaseHelpers/getAllMessagesOfUser');
+  */
 
   // dat schema
-  // {
+  // { 
+  //   conversation_id: 'conversation_id    
   //   dstUser: 'receiving user id',
   //   srcUser: 'sending user id',
   //   msg: 'msg being sent'
@@ -162,7 +178,12 @@ io.on('connection', socket => {
     console.log('socket.rooms1: ', socket.rooms);
     ///socket.emit('message', {damn: 'son'})
     
-    socket.to(data.dstUser).emit('message', {srcUser: data.srcUser,  msg: 'echo:' + data.msg ? data.msg : ''});
+    // go add message to the database.
+    addMessage(data.conversation_id, data.srcUser, data.dstUser, data.msg)
+      .then(response => {
+
+        socket.to(data.dstUser).emit('message', {srcUser: data.srcUser,  msg: 'echo:' + data.msg ? data.msg : ''});
+      })  
     //socket.to('1').emit('message', {damn1: 'son'})
   })
 
@@ -172,6 +193,14 @@ io.on('connection', socket => {
   });
 
   socket.on('register_client', userId => {
+    // get all the conversations for the client.
+    /*
+    let client_conversations = getAllConversationsForUser(userId)
+      .then((response) => {
+
+        socket.client_conversations
+      })
+    */
     console.log('revieved register_client event')
     socket.join(userId);
     socket.emit('registered');
