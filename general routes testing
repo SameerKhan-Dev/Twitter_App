@@ -1,9 +1,26 @@
 
+
+PUT http://localhost:8080/api/tweets/1
+content-Type: application/json
+
+{
+    "description": "I hate soccer."
+}
+
+
 POST http://localhost:8080/api/users/new
 content-Type: application/json
 
 {
-    "userName": null,
+    "userName": "Joey11001",
     "email": "mike@email.com",
     "password": "helloWorld"   
+}
+
+
+POST http://localhost:8080/api/tweets
+content-Type: application/json
+
+{
+    "description": "HELLLLLLLOOOOOOO PEOPLE"
 }

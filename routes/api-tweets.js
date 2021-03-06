@@ -12,6 +12,8 @@ const get_all_messages_of_user = require ('../database/databaseHelpers/getAllMes
 const add_new_tweet = require('../database/databaseHelpers/addNewTweet');
 const get_tweet_owner = require('../database/databaseHelpers/getTweetOwner');
 const update_tweet = require('../database/databaseHelpers/updateTweet');
+const delete_tweet = require('../database/databaseHelpers/deleteTweet');
+
 /*
 TWEETS:
 Create Tweet:
@@ -28,8 +30,6 @@ GET /tweets/:id
 
 GET All tweets for a User:
 GET /users/:id/tweets
-
-
 
 // load .env data into process.env
 
@@ -56,21 +56,26 @@ router.get('/', function(req, res, next) {
 // post a tweet
 router.post("/",(req,res) => {
 
-  const user_id = req.session.user_id;
-
+  //const user_id = req.session.user_id;
+  const user_id = 1;
   if(user_id){
     const description = req.body.description;
-    // valid user so can post tweet
-    add_new_tweet(user_id, description)
-      .then(response => {
-        if(response){
-          return res.status(200).send("tweet posted successfully");
-        } else {
-          return res.status(500).send("server error");
-        }
-      }).catch (err => {
-        res.status(500).send("failed server error");
-      })
+    if(description === null){
+      res.status(400).send("error description can not be empty");
+    } else {
+        // valid user so can post tweet
+        add_new_tweet(user_id, description)
+        .then(response => {
+          if(response){
+            return res.status(200).send("tweet posted successfully");
+          } else {
+            return res.status(500).send("server error");
+          }
+        }).catch (err => {
+          res.status(500).send("failed server error");
+        })
+    }
+
   } else {
     res.status(403).send("error - unauthorized access");
   }
@@ -116,5 +121,53 @@ router.put("/:id",(req,res) => {
       return res.status(403).send("error - unauthorized access");
     }
 });
+
+/*
+Delete tweet:
+DELETE /tweets/:id
+*/
+
+router.delete("/:id",(req,res) => {
+
+  //const user_id = req.session.user_id;
+  const user_id = 1;
+  if(user_id){
+    const tweet_id = req.params.id;
+    const description = req.body.description;
+
+    // validate tweet belongs to currently logged in user
+    get_tweet_owner(tweet_id)
+      .then(response => {
+        // check if tweet exists in database i.e response received.
+        if(response){
+          // validate current logged in user is the owner of tweet
+          if (user_id === response.creator_id){
+            return delete_tweet(tweet_id)
+              .then(response => {
+                if(response){
+                  return res.status(200).send("tweet successfully deleted");
+                } else {
+                  return res.status(500).send("server error");
+                }
+              })
+          } else {
+            return res.status(403).send("denied access to delete tweet, because you are not owner of tweet");
+          }
+        } else {
+          return res.status(400).send("bad request, tweet does not exist");
+        }
+      }).catch(err => {
+        return res.status(500).send("server error");
+      })
+  } else {
+      return res.status(403).send("error - unauthorized access");
+  }
+});
+
+
+
+
+
+
 
 module.exports = router;

@@ -17,7 +17,6 @@ CREATE TABLE tweets (
   id SERIAL PRIMARY KEY NOT NULL,
   creator_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   description TEXT NOT NULL,
-  isDeleted BOOLEAN DEFAULT false,
   created_at TIMESTAMP DEFAULT NOW()
 );
 
