@@ -1,4 +1,5 @@
 
-GET http://localhost:8080/api/users/1
+GET http://localhost:8080/api/chats/conversation/messages/1
 content-Type: application/json
+
 

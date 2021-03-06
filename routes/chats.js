@@ -10,6 +10,7 @@ const get_all_conversations_for_user = require ('../database/databaseHelpers/get
 const get_all_messages_for_conversation = require ('../database/databaseHelpers/getAllMessagesForConversation');
 const get_all_messages_of_user = require ('../database/databaseHelpers/getAllMessagesOfUser');
 const get_conversation_between_users = require ('../database/databaseHelpers/getConversationBetweenUsers');
+const get_conversation = require ('../database/databaseHelpers/getConversation');
 
 // load .env data into process.env
 require("dotenv").config();
@@ -27,13 +28,14 @@ const cookieSession = require("cookie-session");
 const database = require("../database/database");
 var path = require('path');
 const bcrypt = require('bcryptjs');
+const getAllMessagesForConversation = require("../database/databaseHelpers/getAllMessagesForConversation");
 
 // get list of conversations belonging to logged-in user
 router.get('/conversations/user', (req, res) => {
 
     //let user_id = req.session.user_id;
     let user_id = 1;
-    
+
     if(user_id){
         get_all_conversations_for_user(user_id)
             .then(response => {
@@ -48,6 +50,43 @@ router.get('/conversations/user', (req, res) => {
     } else {
        res.status(403).send("access denied");
     }
-  });
+});
+
+
+// get list of messages belonging to a specific conversation
+router.get('/conversation/messages/:id', (req, res) => {
+
+    //const user_id = req.session.user_id;
+    const user_id = 1;
+    
+    if(user_id){
+        const conversation_id = req.params.id;
+        get_conversation(conversation_id)
+            .then(response => {
+
+                if(response){
+                    if(response.user_one_id === user_id || response.user_two_id === user_id){
+
+                        getAllMessagesForConversation(conversation_id)
+                            .then(response => {
+                                if(response){
+                                    return res.status(200).send(response);
+                                } else {
+                                    return res.status(500).send("server error");
+                                }
+                            })
+                    } else {
+                       return res.status(403).send("access denied");
+                    }
+                } else {
+                    return res.status(500).send("server error");
+                }
+            }).catch(err => {
+                res.status(500).send("server error");
+            })
+    } else {
+       res.status(403).send("access denied");
+    }
+});
 
 module.exports = router;
