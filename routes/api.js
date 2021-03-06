@@ -64,7 +64,9 @@ router.post("/login", (req, res) => {
           console.log("here6");
           res.status(400).send("invalid email - email is not registered");
         }
-    }).catch ((err) => { res.status(500).send("server error")});
+    }).catch ((err) => { 
+      console.log('err is:', err)
+      res.status(500).send("server error")});
   }); 
 
   router.post("/logout", (req, res) => {

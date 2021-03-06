@@ -4,7 +4,7 @@ const getUserByEmail = function (email) {
   return db
     .query(
       `
-      SELECT id, username FROM users
+      SELECT id, username, password FROM users
       WHERE users.email = $1;`,
       [email]
     )
