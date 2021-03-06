@@ -179,7 +179,7 @@ io.on('connection', socket => {
     ///socket.emit('message', {damn: 'son'})
     
     // go add message to the database.
-    addMessage(data.conversation_id, data.srcUser, data.dstUser, data.msg)
+    addMessage(parse_Int(data.conversation_id), parse_Intdata.srcUser, data.dstUser, data.msg)
       .then(response => {
 
         socket.to(data.dstUser).emit('message', {srcUser: data.srcUser,  msg: 'echo:' + data.msg ? data.msg : ''});
@@ -209,7 +209,7 @@ io.on('connection', socket => {
   console.log('socket.rooms: ', socket.rooms);
   socket.emit('connected');
 
-  console.log("Socket recevied conection!");
+  console.log("Socket received conection!");
 });
 
 
