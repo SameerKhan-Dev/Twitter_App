@@ -36,3 +36,7 @@ content-Type: application/json
 GET http://localhost:8080/api/tweets/user_tweets/1
 content-Type: application/json
 
+
+GET http://localhost:8080/api/users/1
+content-Type: application/json
+

@@ -22,6 +22,7 @@ const addMessage = require ('./database/databaseHelpers/addMessage');
 const tweetsRouter = require('./routes/api-tweets.js');
 const apiRouter = require('./routes/api.js');
 const usersRouter = require('./routes/users.js');
+const chatsRouter = require('./routes/chats.js');
 
 const getAllConversationsForUser = require("./database/databaseHelpers/getAllConversationsForUser");
 const getConversationBetweenUsers = require("./database/databaseHelpers/getConversationBetweenUsers");
@@ -128,6 +129,7 @@ app.use(
 app.use('/api/tweets', tweetsRouter);
 app.use('/api', apiRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/chats', chatsRouter);
 
 app.get('/index', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
