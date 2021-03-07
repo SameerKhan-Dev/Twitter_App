@@ -18,14 +18,27 @@ This app allows users to share messages to the public and enables chatting betwe
   6. sessions are used to maintain login state
   
 ## Setup
-  1. Install Node (this repo was tested on v12.14.1)
+  1. Install Node (this repo was tested on v12.14.1, recommended to use this node version when running to ensure full compatibility)
   2. Setup Postgres SQL DB on localhost
-      1. Create DB with name `twitter_app_db`
-  3. Update `.env` file with the correct credentials
-  3. Run `npm install`to install node dependencies
-  4. To setup the PostgreSQL DB with Tables and seeded data run `npm run db:reset`
-  5. Run `npm run start` to run server
-  6. Run `npm run test` to run unit tests
+      2.1 Create DB with name `twitter_app`
+  3. Create `.env` file with the correct credentials: Copy and paste the below lines into your env file and fill out the DB_USER, DB_PASS with your correct local credentials. Other credentials (DB_HOST, DB_NAME, SESSION_KEYS, DB_PORT) should be left as-is.
+  
+  // Copy-paste below lines into a new .env file in your project folder and save: 
+ 
+       DB_HOST = localhost
+       DB_USER = /*Your local user name, who owns the db/has access to db */
+       DB_PASS = /*Your user password for access to db*/
+       DB_NAME = twitter_app
+       DB_PORT = 5432
+       SESSION_KEY_PRIMARY = b6d0e7eb-8c4b-4ae4-8460-fd3a08733dcb
+       SESSION_KEY_SECONDARY = 1fb2d767-ffbf-41a6-98dd-86ac2da9392e
+  
+Note: The session keys (SESSION_KEY_PRIMARY , SESSION_KEY_SECONDARY) would not be accessible publically in a real production project, instead these keys would be shared privately with authorized developers working on the project.
+  
+  5. Run `npm install`to install node dependencies
+  6. To setup the PostgreSQL DB with Tables and seeded data run `npm run db:reset`
+  7. Run `npm run start` to run server
+  8. Run `npm run test` to run unit tests
 
 ## HTTP API Endpoints
   1. `/api`
